@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "eds-dev": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/Users/swapnil.gaikwad/Documents/AI/living-on-edge/eds-mcp-server/dist/index.js"]
+    }
+  }
+}
