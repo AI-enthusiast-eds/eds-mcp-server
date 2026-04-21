@@ -31,6 +31,7 @@ import { registerPerformanceCheck } from './tools/check-performance.js';
 import { registerLookupBlock } from './tools/lookup-block.js';
 import { registerSearchBlockCollection } from './tools/search-block-collection.js';
 import { registerEdsScripts } from './tools/eds-scripts.js';
+import { registerGenerateBlockFromDesign } from './tools/generate-block-from-design.js';
 
 // Resources
 import { registerResources } from './resources/eds-resources.js';
@@ -55,6 +56,7 @@ registerExplainDom(server);       // explain_dom — show content → DOM mappin
 registerLookupBlock(server);      // lookup_block — search block patterns & references
 registerSearchBlockCollection(server); // search_block_collection — search Adobe Block Collection & Block Party
 registerPerformanceCheck(server); // check_performance — analyze block performance
+registerGenerateBlockFromDesign(server); // generate_block_from_design — text / image / Figma → block (Adobe CDD)
 
 // Tools: Project & Configuration
 registerScaffoldProject(server);  // scaffold_project — new project setup guide
@@ -77,9 +79,10 @@ async function main() {
   console.error('🚀 EDS MCP Server v1.0.0 running on stdio');
   console.error('   Tools: scaffold_block, scaffold_model, validate_block, explain_dom,');
   console.error('          lookup_block, search_block_collection, check_performance,');
+  console.error('          generate_block_from_design,');
   console.error('          scaffold_project, eds_config, eds_scripts_guide');
-  console.error('   Resources: eds-coding-standards, eds-block-guide, eds-cheatsheet');
-  console.error('   Prompts: new-block, fix-block');
+  console.error('   Resources: eds-coding-standards, eds-block-guide, eds-cheatsheet, eds-adobe-skills');
+  console.error('   Prompts: new-block, fix-block, design-to-block');
   console.error('   CLI: eds-validate (block validator/linter)');
 }
 

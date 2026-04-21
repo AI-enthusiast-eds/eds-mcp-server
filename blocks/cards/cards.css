@@ -1,0 +1,113 @@
+/* Cards block — scoped to main .cards */
+
+main .cards > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-m, 1rem);
+}
+
+main .cards > ul > li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s, 0.5rem);
+  background: var(--background-color, #fff);
+  border: 1px solid var(--border-color, #e5e5e5);
+  border-radius: var(--border-radius, 4px);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+main .cards > ul > li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 8%);
+}
+
+main .cards .cards-card-image {
+  line-height: 0;
+}
+
+main .cards .cards-card-image picture,
+main .cards .cards-card-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+main .cards .cards-card-body {
+  padding: var(--spacing-m, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s, 0.5rem);
+  font-family: var(--body-font-family, inherit);
+}
+
+main .cards .cards-card-body :is(h2, h3, h4) {
+  margin: 0;
+  font-family: var(--heading-font-family, inherit);
+  font-size: var(--heading-font-size-s, 1.125rem);
+}
+
+main .cards .cards-card-body p {
+  margin: 0;
+  color: var(--text-color, inherit);
+}
+
+main .cards .cards-card-body a {
+  color: var(--link-color, #035fe6);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+main .cards .cards-card-body a:hover {
+  color: var(--link-hover-color, #024bb5);
+  text-decoration: underline;
+}
+
+/* Tablet — 2 columns */
+@media (min-width: 600px) {
+  main .cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop — 3 columns */
+@media (min-width: 900px) {
+  main .cards > ul {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-l, 2rem);
+  }
+}
+
+/* Large desktop — 4 columns */
+@media (min-width: 1200px) {
+  main .cards > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Variants */
+main .cards.wide > ul {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  main .cards.wide > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+main .cards.dark > ul > li {
+  background: var(--dark-color, #1a1a1a);
+  color: var(--clr-white, #fff);
+  border-color: transparent;
+}
+
+main .cards.dark .cards-card-body p,
+main .cards.dark .cards-card-body :is(h2, h3, h4) {
+  color: inherit;
+}

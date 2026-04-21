@@ -9,6 +9,7 @@ A **Model Context Protocol** server that supercharges AEM EDS development in VS 
 | **Scaffolding** | `scaffold_block` | Generate complete block files (JS, CSS, README, test.html, sample content) |
 | | `scaffold_model` | Generate Universal Editor component model/definition/filter JSON |
 | | `scaffold_project` | Step-by-step guide for new EDS projects (standard & repoless) |
+| | `generate_block_from_design` | **Multimodal** — turn a text description, design image, and/or Figma URL into an EDS block using Adobe's Content-Driven-Development workflow |
 | **Validation** | `validate_block` | Check JS, CSS, JSON model, and content against EDS standards |
 | | `check_performance` | Analyze block code for performance issues and budget impact |
 | **Guidance** | `explain_dom` | Show how authored content tables transform into DOM |
@@ -17,7 +18,7 @@ A **Model Context Protocol** server that supercharges AEM EDS development in VS 
 | | `eds_config` | Generate configuration files (fstab, redirects, headers, etc.) |
 | | `eds_scripts_guide` | Guidance for scripts.js, delayed.js, and lifecycle customization |
 
-Plus **3 resources** (coding standards, block guide, cheatsheet) and **2 prompt templates** (new-block, fix-block).
+Plus **4 resources** (coding standards, block guide, cheatsheet, **Adobe EDS skills**) and **3 prompt templates** (new-block, fix-block, **design-to-block**).
 
 ### Prompt Parameters
 
@@ -25,6 +26,28 @@ Plus **3 resources** (coding standards, block guide, cheatsheet) and **2 prompt 
 |--------|------------|
 | `new-block` | `blockName` (required), `description` (required) |
 | `fix-block` | `blockName` (required), `issue` (required) |
+| `design-to-block` | `blockName` (required), `text`, `imageRefs`, `figmaUrl` (at least one of the last three) |
+
+### Design → Block workflow
+
+The `generate_block_from_design` tool and the `design-to-block` prompt integrate
+Adobe's official [EDS skills](https://github.com/adobe/skills/tree/beta/skills/aem/edge-delivery-services)
+(Content-Driven Development, analyze-and-plan, content-modeling, authoring-analysis,
+building-blocks, UE component model, testing-blocks, code-review).
+
+Provide any combination of:
+
+- **Text** — natural-language description of what the block should do
+- **Image(s)** — local paths or URLs of design screenshots/mockups (the IDE LLM
+  analyzes them with vision)
+- **Figma URL** — a `figma.com/file/...` or `figma.com/design/...` link, optionally
+  with `?node-id=…`. The tool emits a local `curl` recipe to pull node JSON +
+  a 2× PNG export; your Figma token stays on your machine.
+
+The tool returns: the CDD workflow outline, a vision-analysis prompt for the IDE
+LLM, the Figma-fetch recipe (if applicable), implementation patterns, a baseline
+scaffold (JS/CSS/README/test.html/sample-content), the UE component-model
+guidance, a testing matrix, and a self-review checklist.
 
 ## Quick Start
 

@@ -7,6 +7,17 @@ import {
   LOADING_LIFECYCLE,
   FIELD_TYPES,
 } from '../knowledge/eds-conventions.js';
+import {
+  ADOBE_SKILLS_INDEX,
+  CDD_WORKFLOW,
+  ANALYZE_AND_PLAN_TEMPLATE,
+  CONTENT_MODEL_RULES,
+  AUTHORING_DECISION_TREE,
+  BUILDING_BLOCKS_PATTERNS,
+  UE_COMPONENT_MODEL_RULES,
+  CODE_REVIEW_CHECKLIST,
+  TESTING_MATRIX,
+} from '../knowledge/adobe-skills.js';
 
 /**
  * Register MCP Resources — static knowledge the IDE's LLM can reference.
@@ -141,5 +152,35 @@ var(--nav-height)         /* Navigation bar height */
         },
       ],
     })
+  );
+
+  // ─── Adobe EDS Skills (condensed) ───────────────────────
+  // Integration of https://github.com/adobe/skills/tree/beta/skills/aem/edge-delivery-services
+  server.resource(
+    'eds-adobe-skills',
+    'eds://docs/adobe-skills',
+    {
+      description:
+        'Condensed Adobe EDS skills (CDD, analyze-and-plan, content-modeling, authoring-analysis, building-blocks, UE component model, testing-blocks, code-review). Use as the workflow reference when building or modifying blocks.',
+      mimeType: 'text/markdown',
+      annotations: {
+        audience: ['assistant'] as const,
+        priority: 0.95,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: 'text/markdown',
+          text:
+            `# Adobe EDS Skills — Workflow Reference\n\n` +
+            `Source: https://github.com/adobe/skills/tree/beta/skills/aem/edge-delivery-services (Apache-2.0)\n\n` +
+            `## Skill index\n\n` +
+            ADOBE_SKILLS_INDEX.map((s) => `- **${s.id}** — ${s.purpose}  \n  _When:_ ${s.when}`).join('\n') +
+            `\n\n---\n\n${CDD_WORKFLOW}\n\n---\n\n${ANALYZE_AND_PLAN_TEMPLATE}\n\n---\n\n${CONTENT_MODEL_RULES}\n\n---\n\n${AUTHORING_DECISION_TREE}\n\n---\n\n${BUILDING_BLOCKS_PATTERNS}\n\n---\n\n${UE_COMPONENT_MODEL_RULES}\n\n---\n\n${TESTING_MATRIX}\n\n---\n\n${CODE_REVIEW_CHECKLIST}\n`,
+        },
+      ],
+    }),
   );
 }

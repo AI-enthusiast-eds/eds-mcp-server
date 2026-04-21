@@ -66,6 +66,43 @@ export function registerPrompts(server: McpServer) {
     })
   );
 
+  // ─── Design-to-Block Prompt (text / image / Figma) ──────
+  server.prompt(
+    'design-to-block',
+    'Turn a text description, a design screenshot, and/or a Figma URL into an EDS block using Adobe\'s Content-Driven-Development workflow',
+    {
+      blockName: z.string().describe('Block name in kebab-case (e.g. "hero", "product-card")'),
+      text: z.string().optional().describe('What the block should do / look like'),
+      imageRefs: z.string().optional().describe('Comma-separated image paths or URLs of the design'),
+      figmaUrl: z.string().optional().describe('Figma file or frame URL'),
+    },
+    ({ blockName, text, imageRefs, figmaUrl }) => ({
+      messages: [
+        {
+          role: 'user' as const,
+          content: {
+            type: 'text' as const,
+            text:
+              `Build an AEM EDS block named "${blockName}" from the following design inputs:\n\n` +
+              (text ? `**Description:** ${text}\n` : '') +
+              (imageRefs ? `**Images:** ${imageRefs}\n` : '') +
+              (figmaUrl ? `**Figma:** ${figmaUrl}\n` : '') +
+              `\n` +
+              `Steps to follow (Adobe CDD workflow):\n` +
+              `1. Call the \`generate_block_from_design\` tool with the same inputs to get the workflow outline, vision-analysis prompt, Figma-fetch recipe (if any), and a baseline scaffold.\n` +
+              `2. Execute the vision-analysis prompt against the provided image(s) / Figma export — produce structure, fields, variants, responsive behavior, interactivity, design tokens, and acceptance criteria.\n` +
+              `3. Edit the baseline scaffold (\`blocks/${blockName}/${blockName}.js\`, \`.css\`) to match the analysis; reuse platform \`<picture>\`/\`<a>\` nodes; keep everything scoped to \`main .${blockName}\`.\n` +
+              `4. If the block has authored fields, call \`scaffold_model\` with the derived field list.\n` +
+              `5. Call \`validate_block\` and \`check_performance\`; fix any findings.\n` +
+              `6. Self-review against the code-review checklist before opening a PR.\n\n` +
+              `Hard constraints:\n` +
+              `${HARD_CONSTRAINTS.slice(0, 8).map((c) => `- ${c}`).join('\n')}\n`,
+          },
+        },
+      ],
+    }),
+  );
+
   // NOTE: migrate-to-eds and review-block prompts are available
   // in the premium tier only.
 }
